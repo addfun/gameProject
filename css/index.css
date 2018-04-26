@@ -1,0 +1,206 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+.gamer{
+  text-align: center;
+  width: 800px;
+  margin: 0 auto;
+  position: relative;
+  height: 630px;
+  perspective: 800px;
+  overflow: hidden;
+}
+.gamer .lei-num{
+  position: relative;
+}
+.gamer .lei-num::before{
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: -25px;
+  display: inline-block;
+  margin-right: 5px;
+  height: 20px;
+  width: 20px;
+  background-color: red;
+}
+.gamer .exit,
+.gamer .over-again{
+  padding: 10px;
+  color: #fff;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+.gamer .exit{
+  background-color: rgb(102, 102, 102);
+}
+.gamer .over-again{
+  background-color: rgb(255, 68, 0);
+}
+.gamer .exit:hover{
+  background-color: rgba(102, 102, 102, .8);
+}
+.gamer .over-again:hover{
+  background-color: rgba(255, 68, 0, .8);
+}
+.instr{
+  font-size: 14px;
+  color: #666;
+}
+
+
+.game-beform{
+  position: absolute;
+  opacity: 1;
+  left: 50%;
+  top: 50%;
+  padding: 50px;
+  transform: translate(-50%, -75%);
+  transition: all 0.5s ease-in-out;
+  background-color: rgba(0,0,0,.5);
+  color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 2px 2px rgb(33, 70, 231);
+}
+.game-beform-clicked{
+  opacity: 0;
+  transform: translate(-250%, -75%) rotate3d(0,1,0,-45deg) scale(0.5);
+}
+.game-beform .difficulty{
+  margin: 20px 0;
+}
+.game-beform .difficulty div{
+  margin: 10px;
+  border: 2px transparent solid;
+  background-color: rgba(255, 68, 0, 1);
+  cursor: pointer;
+}
+.game-beform .difficulty div:hover{
+  background-color: rgba(255, 68, 0, 0.8);
+}
+.game-beform .difficulty .clicked{
+  border: 2px orange solid;
+}
+.game-beform .game-start{
+  margin-top: 20px;
+  padding: 5px;
+  background-color: dodgerblue;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.game-beform .game-start:hover{
+  background-color: rgb(59, 157, 255);
+}
+
+
+.game-box{
+  transition: all 0.5s ease-in-out;
+  opacity: 0;
+  overflow: auto;
+  display: none;
+  transform: translate(50%, 0) scale(0.6) rotate3d(0,1,0,45deg);
+}
+.game-box-clicked{
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+.wrapper{
+  margin: 10px auto;
+  font-size: 0;
+  border: 1px #ccc solid;
+}
+.wrapper div{
+  float: left;
+  font-size: 16px;
+  line-height: 30px;
+  text-align: center;
+  color: #333;
+  border: 1px #ccc solid;
+  background: #f90;
+  box-sizing: border-box;
+}
+.wrapper .clicked-no{
+  background: #eee;
+}
+.wrapper .clicked-lei{
+  background: red;
+}
+.wrapper .right-click{
+  background: green;
+}
+.alert-bg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+.alert-bg.active{
+  display: block;
+}
+.alert-box{
+  position: absolute;
+  width: 200px;
+  box-shadow: 0 0 10px 5px #ccc;
+  padding: 20px 10px 10px;
+  text-align: center;
+  color: #fff;
+}
+.alert-box1{
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-150%);
+  background-color: #f55;
+  transition: all 0.3s ease-in;
+  opacity: 0;
+}
+.alert-box1.active{
+  transform: translateX(-50%) translateY(-100%);
+  opacity: 1;
+}
+.alert-box2{
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-150%);
+  background-color: #0f5;
+  transition: all 0.3s ease-in;
+  opacity: 0;
+}
+.alert-box2.active{
+  transform: translateX(-50%) translateY(-100%);
+  opacity: 1;
+}
+.alert-box .alert-text,
+.alert-box .alert-time{
+  margin-bottom: 10px;
+}
+.alert-box .alert-time span{
+  color: darkcyan;
+  font-size: 20px;
+}
+.alert-box button{
+  margin: 10px;
+  padding: 5px;
+  color: #fff;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+.alert-box .ok-btn{
+  background-color: #666;
+}
+.alert-box .again,
+.alert-box .next{
+  background-color: #f40;
+}
+.alert-box .ok-btn:hover{
+  background-color: #888;
+}
+.alert-box .again:hover,
+.alert-box .next:hover{
+  background-color: #e60
+}
+

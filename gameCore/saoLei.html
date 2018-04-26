@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>只实现核心(扫雷)功能</title>
+    <style>
+    .gamer{
+        text-align: center;
+    }
+    .instr{
+        font-size: 14px;
+        color: #666;
+    }
+    .wrapper{
+        margin: 10px auto;
+        font-size: 0;
+        border: 1px #ccc solid;
+    }
+    .wrapper div{
+        float: left;
+        font-size: 16px;
+        line-height: 30px;
+        text-align: center;
+        color: #333;
+        border: 1px #ccc solid;
+        background: #f90;
+        box-sizing: border-box;
+    }
+    .wrapper .clicked-no{
+        background: #eee;
+    }
+    .wrapper .clicked-lei{
+        background: red;
+    }
+    .wrapper .right-click{
+        background: green;
+    }
+    </style>
+</head>
+<body>
+    <div class='gamer'>
+        <h2>扫雷</h2>
+        <div class='instr'>说明：必须右键把所有雷挖出来才算胜利！(只实现核心功能)</div>
+        <div class='timer'>用时：<span class='minutes'>00</span>:<span class='second'>00</span></div>
+        <div class='wrapper'></div>
+        <button class='next'>下一局</button>
+    </div>
+    
+    <script>
+    Array.prototype._remove=function(val){
+        var index = this.indexOf(val);
+        if(index>-1){
+            this.splice(index,1);
+        }
+    }
+
+    
+    var oWrap = document.getElementsByClassName('wrapper')[0];
+    var oDiv = null;
+    var leiNum = 10;//雷的数量
+    var mapNum = 100;//格子数量
+    var col = 10;//列
+    var row = 10;//行
+    var width = 30;//格子宽
+    var height = 30;//格子高
+    var leiArr = [];//地雷数组(一维)
+
+    var mapArr = [];//定义地图(二维数组)
+    for(var i=0;i<row;i++){
+        mapArr[i] = [];
+    }
+
+    var safeEleArr=[];//已点击过安全的格子
+    var isLei = []//右键点击可能是雷的格子
+    var remainArr = []//剩余没点击过的格子(暂未用，可以优化)
+
+    function init(){
+        for(var i=0;i<leiNum;i++){//生成地雷
+            var leiIndex = Math.floor(Math.random()*mapNum);
+            if(mapArr[Math.floor(leiIndex/col)][leiIndex%col] == 'lei'){
+                i--;
+            }else{
+                leiArr[i] = leiIndex;
+                mapArr[Math.floor(leiIndex/col)][leiIndex%col] = 'lei';
+            }
+        }
+        
+        for(var i=0;i<row;i++){//形成地图
+            for(var j=0;j<col;j++){
+                var num=0;
+                if(mapArr[i][j]!='lei'){
+                    if(mapArr[i][j+1]=='lei'){
+                        num++;
+                    }
+                    if(mapArr[i][j-1]=='lei'){
+                        num++;
+                    }
+                    if(mapArr[i+1] && mapArr[i+1][j]=='lei'){
+                        num++;
+                    }
+                    if(mapArr[i-1] && mapArr[i-1][j]=='lei'){
+                        num++;
+                    }
+                    if(mapArr[i+1] && mapArr[i+1][j+1]=='lei'){
+                        num++;
+                    }
+                    if(mapArr[i-1] && mapArr[i-1][j-1]=='lei'){
+                        num++;
+                    }
+                    if(mapArr[i-1] && mapArr[i-1][j+1]=='lei'){
+                        num++;
+                    }
+                    if(mapArr[i+1] && mapArr[i+1][j-1]=='lei'){
+                        num++;
+                    }
+                    mapArr[i][j]=num;
+                }else{
+                    mapArr[i][j]='lei';
+                }
+            }
+        }
+        console.log(mapArr)
+        console.log(leiArr)
+        render(oWrap);
+        addEvent(oWrap);
+    }
+
+    function render(dom){
+        var html = '';
+        for(var i=0;i<col;i++){
+            for(var j=0;j<row;j++){
+                html += `<div id=${i*row+j} style="width: ${width}px; height: ${height}px;"></div>`;
+            }
+        }
+        dom.innerHTML = html;
+        oDiv = dom.getElementsByTagName('div');
+        dom.style.width=col*width+'px';
+        dom.style.height=row*height+'px';
+    }
+
+    function addEvent(dom){
+        dom.oncontextmenu = function(){
+            return false;
+        }
+        dom.addEventListener('mouseup',mouseUp, false)
+        
+    }
+
+    function mouseUp(e){
+        if(e.which == 1){
+            leftClick(e);
+        }else if(e.which == 3){
+            rightClick(e)
+        }  
+    }
+    function leftClick(e){
+        if(e.target.className != 'clicked'&&e.target.className != 'wrapper'){            
+            var flog=true;
+            isLei.forEach(function(ele){
+                if(ele==e.target.id){
+                    flog=false;
+                }
+            })
+            if(flog){
+                var x = Math.floor(e.target.id/col);
+                var y = e.target.id%col;
+                if(mapArr[x][y]==='lei'){
+                    e.target.className ='clicked-lei';
+                    for(var i=0;i<leiNum;i++){
+                        document.getElementById(leiArr[i]).className='clicked-lei'
+                    }
+                    setTimeout(function(){
+                        alert('BOOM! game over!!!')
+                        oWrap.removeEventListener('mouseup', mouseUp)
+                    },300)
+                }else{
+                    showSafe(x,y)
+                }
+            }
+            
+        }
+    }
+
+    function rightClick(e){
+        var isLeiNum=Number(e.target.id)
+        var flog = true;
+        if(safeEleArr.indexOf(isLeiNum)==-1){
+            for(var i=0,len=isLei.length;i<len;i++){
+                if(isLeiNum == isLei[i]){
+                    flog = false;
+                }
+            }
+            if(flog){
+                isLei.push(isLeiNum);
+                document.getElementById(isLeiNum).className='right-click';
+            }else{
+                isLei._remove(isLeiNum);
+                document.getElementById(isLeiNum).className='';
+            }
+            console.log(isLei);
+            console.log(safeEleArr);
+            console.log(safeEleArr.indexOf(isLeiNum));
+        }
+        //判断是否完成（胜利）
+        if(leiArr.length===isLei.length){
+            var isSuccess = true;
+            leiArr.forEach(function(ele){
+                if(isLei.indexOf(ele)===-1){
+                    isSuccess = false;
+                }
+            })
+            if(isSuccess){
+                oWrap.removeEventListener('mouseup', mouseUp)
+                setTimeout(function(){
+                    alert('success!good game!!!')
+                },500)
+            }
+            console.log(isSuccess)
+        }
+        
+    }
+
+    function showSafe(x,y){
+        if(y<col&&y>-1&&x<row&&x>-1){
+            var s = x*col+y;
+            var safeEle = document.getElementById(s);
+            safeEle.className='clicked-no'
+            safeEle.innerText = mapArr[x][y] || '';
+        
+            for(var i=0,len=safeEleArr.length;i<len;i++){
+                if(s === safeEleArr[i]){
+                    return;
+                }
+            }
+            safeEleArr.push(s);
+            isLei._remove(s);
+            if(mapArr[x][y]===0){
+                showSafe(x, y+1);
+                showSafe(x, y-1);
+                showSafe(x+1, y);
+                showSafe(x+1, y+1);
+                showSafe(x+1, y-1);
+                showSafe(x-1, y);
+                showSafe(x-1, y-1);
+                showSafe(x-1, y+1);
+            }
+        }
+    }
+    init();
+
+
+    </script>
+</body>
+</html>

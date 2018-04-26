@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>扫雷游戏</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <div class='gamer'>
+        <h2>扫雷</h2>
+        <div class="instr">说明：必须右键把所有雷标记出来，并且标记数不超过雷的数量才算胜利！</div>
+            <div class="game-beform">
+                请选择难度
+                <div class="difficulty">
+                    <div class="simple clicked">简单</div>
+                    <div class="common">一般</div>
+                    <div class="difficult">困难</div>
+                </div>
+                <div class="game-start">开始</div>
+            </div>
+            <div class="game-box">
+                <div class='timer'>用时：<span class='minutes'>00</span>:<span class='second'>00</span></div>
+                <span class="lei-num">00</span>
+                <div class='wrapper'></div>
+                <button class='exit'>退出</button>
+                <button class='over-again'>重新开始</button>
+            </div>
+    </div>
+    <div class="alert-bg">
+        <div class="alert-box alert-box1">
+            <div class="alert-text">很不幸！您踩到地雷了。</div>
+            <button class="ok-btn">确定</button>
+            <button class="again">再来一局</button>
+        </div>
+        <div class="alert-box alert-box2">
+            <div class="alert-text">恭喜！<br>您成功挖出当前所有地雷。</div>
+            <div class="alert-time">用时：<span class="m-time">05</span>分<span class="s-time">10</span>秒</div>
+            <button class="ok-btn">确定</button>
+            <button class="next">进入下一关</button>
+        </div>
+    </div>
+    
+    
+    <script src="./js/tool.js"></script>
+    <script src="./js/index.js"></script>
+</body>
+</html>
