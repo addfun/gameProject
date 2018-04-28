@@ -15,7 +15,7 @@ Array.prototype._remove=function(val){
  * @param {object} target 目标对象
  * @param {object} origin 源对象
  */
-function _extend(type, target, origin){ //es6可用 Object.assign(obj, obj1, obj2)
+function _extend(type, target, origin){ //es6可用 Object.assign()
   target = target || {};
   if(!arguments[2]){
     origin = target;
