@@ -84,16 +84,41 @@
   border: 2px orange solid;
 }
 .game-beform .game-start{
+  position: relative;
   margin-top: 20px;
   padding: 5px;
-  background-color: dodgerblue;
-  border-radius: 4px;
   cursor: pointer;
 }
-.game-beform .game-start:hover{
+.game-beform .game-start::before{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  content: '';
+  height: 100%;
+  width: 100%;
   background-color: rgb(59, 157, 255);
+  border-radius: 4px;
+  z-index: -2;
 }
 
+.game-beform .game-start::after{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  content: '';
+  height: 100%;
+  width: 100%;
+  transform: scale(0);
+  transition: transform .3s;
+  transform-origin: 100% 100%;
+  background-color: dodgerblue;
+  border-radius: 4px;
+  z-index: -1;
+}
+.game-beform .game-start:hover::after{
+  transform: scale(1);
+  transform-origin: 0 0;
+}
 
 .game-box{
   transition: all 0.5s ease-in-out;
