@@ -1,0 +1,56 @@
+.myAlert-mask{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.myAlert-wrapper{
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 300px;
+  height: 126px;
+  box-shadow: 0 0 5px #f40;
+  text-align: center;  
+  background-color: #ccc;
+  color: #000;
+  border-radius: 3px;
+}
+.myAlert-box .myAlert-title{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  background-color: rgba(0,0,0,.3);
+  text-align: left;
+  cursor: move;
+}
+.myAlert-box .myAlert-content{
+  display: -webkit-box;
+  margin: 30px 50px 0;
+  overflow: hidden;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  box-orient: vertical;
+  -webkit-box-orient: vertical;
+}
+.myAlert-box .myAlert-btns{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 25px;
+}
+.myAlert-box .myAlert-btns button{
+  border-radius: 3px;
+  margin: 0 10px;
+  padding: 1px 6px;
+  outline: none;
+  cursor: pointer;
+}
+.myAlert-box .myAlert-btns .myAlert-confirmBtn{
+  background-color: #f40;
+}
+.myAlert-box .myAlert-btns .myAlert-cancelBtn{
+  background-color: #666;
+}

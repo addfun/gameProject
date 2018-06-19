@@ -3,7 +3,7 @@
  * @param {number/string} val 数组中要删除的值
  */
 Array.prototype._remove=function(val){
-  let index = this.indexOf(val);
+  var index = this.indexOf(val);
   if(index>-1){
     this.splice(index,1);
   }
@@ -15,11 +15,11 @@ Array.prototype._remove=function(val){
  * @param {object} target 目标对象
  * @param {object} origin 源对象
  */
-function _extend(type, target, origin){ //es6可用 Object.assign() 或者newObj = {...obj1,...obj2}
+function _extend(type, origin, target){ //es6可用 Object.assign() 或者newObj = {...obj1,...obj2}
   target = target || {};
   if(!arguments[2]){
-    origin = target;
-    target = typeof(type)==='object' ? type : {};
+    origin = type;
+    target = origin || {};
   }
   if(type){
       for(var prop in origin){
@@ -30,7 +30,7 @@ function _extend(type, target, origin){ //es6可用 Object.assign() 或者newObj
             }else{
               target[prop] = {};
             }
-            _extend(true, target[prop], origin[prop]);
+            _extend(true, origin[prop], target[prop]);
           }else{
             target[prop] = origin[prop];
           }

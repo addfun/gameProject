@@ -36,7 +36,7 @@ const saoLeiGame = {
   
   //游戏开始的入口函数(开始游戏或重新开始的入口函数)
   start(options){
-    _extend(1, this.defaultOpts, options);
+    _extend(1, options, this.defaultOpts);
     // 切换关卡要变的参数
     this.mapNum = this.defaultOpts.col * this.defaultOpts.row,//格子数量
     this.time = 0;//游戏时长
@@ -45,7 +45,6 @@ const saoLeiGame = {
     this.leiArr = [];//地雷数组(一维)
     this.safeEleArr = [];//已点击过安全的格子
     this.isLei = [];//右键点击可能是雷的格子
-    this.remainArr = [];//剩余没点击过的格子(暂未用，可用以优化)
     //地图数组(形成二维数组)
     this.mapArr = [];
     for(let i=0;i<this.defaultOpts.row;i++){
@@ -211,20 +210,26 @@ const saoLeiGame = {
   },
   //弹窗下一关按钮(通过这一关下一关难度提升,最后一关通过时返回主页)
   nextBoxFun(){
-    this.removeEvent();
-    this.okBtn2Fun();
-    this.checkPoint++;
+    var _this = this
+    _this.removeEvent();
+    _this.okBtn2Fun();
+    _this.checkPoint++;
     //判断是否为最后一关
-    if(this.checkPoint >= diffArr.length){
-      alert('真厉害，您已经通关了！')
-      this.backBeform();
+    if(_this.checkPoint >= diffArr.length){
+      new PopupWindow().confirm({
+        title: '游戏提示：',
+        content: '真厉害，您已经通关了！',
+        confirmFn: function(){
+          _this.backBeform();
+        }
+      })
     }else{
-      this.start(diffArr[this.checkPoint]);
+      _this.start(diffArr[_this.checkPoint]);
       //同时改变首页难度的默认选择渲染
-      for(let j=0,len=this.$difficulty.length;j<len;j++){
-        _removeClass(this.$difficulty[j],'clicked');
+      for(let j=0,len=_this.$difficulty.length;j<len;j++){
+        _removeClass(_this.$difficulty[j],'clicked');
       }
-      _addClass(this.$difficulty[this.checkPoint],'clicked');
+      _addClass(_this.$difficulty[_this.checkPoint],'clicked');
     }
   },
   //弹窗再来一次按钮
@@ -248,12 +253,16 @@ const saoLeiGame = {
   },
   //重新开始
   againFun(e){
+    let _this = this
     if(this.status){
-      let flog = confirm('游戏还没结束，你确定要重新开始吗？');
-      if(flog){
-        this.removeEvent();
-        this.start(diffArr[this.checkPoint]);
-      }
+      new PopupWindow().confirm({
+        title: '游戏提示：',
+        content: '游戏还没结束，你确定要重开吗？',
+        confirmFn: function(){
+          _this.removeEvent();
+          _this.start(diffArr[this.checkPoint]);
+        }
+      })
     }else{
       this.removeEvent();
       this.start(diffArr[this.checkPoint]);
@@ -262,11 +271,15 @@ const saoLeiGame = {
   //退出游戏
   exitFun(e){
     e.stopPropagation();
+    let _this = this;
     if(this.status){
-      let flog = confirm('游戏还没结束，你确定要退出吗？');
-      if(flog){
-        this.backBeform();
-      }
+      new PopupWindow().confirm({
+        title: '游戏提示：',
+        content: '游戏还没结束，你确定要退出吗？',
+        confirmFn: function(){
+          _this.backBeform();
+        }
+      })
     }else{
       this.backBeform();
     }
@@ -362,6 +375,24 @@ const saoLeiGame = {
       })
       //雷数组和可能是雷的数组相同，表明成功
       if(isSuccess){
+        //显示未显示的格子
+        let remainArr = [];
+        for(let i=0,len=this.mapNum;i<len;i++){
+          remainArr[i]=i;
+        }
+        let downArr = this.safeEleArr.concat(this.isLei)
+        for(let j=0,lenJ=downArr.length;j<lenJ;j++){
+          remainArr.splice(remainArr.indexOf(downArr[j]),1)
+        }
+        console.log(remainArr);
+        for(let j=0,lenJ=remainArr.length;j<lenJ;j++){
+          let safeEle = document.getElementById(remainArr[j]);
+          let optsCol = this.defaultOpts.col;
+          let x = Math.floor(remainArr[j] / optsCol),
+              y = remainArr[j] % optsCol;
+          safeEle.className = 'clicked-no';
+          safeEle.innerText = this.mapArr[x][y] || '';
+        }
         //移除事件绑定 弹出成功弹窗
         this.$Wrap.removeEventListener('mouseup', this.binMouseUp)
         clearTimeout(this.timer);
@@ -431,7 +462,7 @@ const saoLeiGame = {
     this.$STime.innerHTML = parseInt(this.time%60);
     setTimeout(()=>{
       _addClass(this.$alertBox2,'active');
-    },0)
+    },300)
     this.$alertBox1.style.display='none';
     this.$alertBox2.style.display='block';
     _addClass(this.$alertBg,'active');
@@ -442,7 +473,7 @@ const saoLeiGame = {
 saoLeiGame.init();
 console.timeEnd();
 
-//关卡难度数组(默认3关，多了会出现隐藏关卡)（雷的数量,地图列数,行数）
+//关卡难度数组(默认3关，多了会出现隐藏关卡) （雷的数量,地图列数,行数）
 let diffArr = [{
     leiNum : 10,
     col : 10,
@@ -458,7 +489,3 @@ let diffArr = [{
     col : 15,
     row : 15
 }];
-
-
-
-
