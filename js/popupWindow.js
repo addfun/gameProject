@@ -6,7 +6,6 @@
   var def = {
     title: '弹窗提示主题：',
     content: '弹窗确定提示信息？',
-    confirmBtnText: '确定',
     confirmFn: null,
     cancelFn: null
   }
@@ -118,14 +117,7 @@
       document.removeEventListener('mousemove',this.callMouseMove)
       document.removeEventListener('mouseup',this.bindMouseUp)
     }
-  //浅度克隆
-  function _extend(origin, target){
-    var target = target || {}
-    for(var prop in origin){
-      target[prop] = origin[prop]
-    }
-    return target;
-  }
+
   //继承
   function _inherit(origin, target){
     function F(){};
