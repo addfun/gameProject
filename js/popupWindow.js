@@ -47,7 +47,7 @@
         //关闭弹窗
         $confirmBtn.onclick = null
         $cancelBtn.onclick = null
-        $box.remove()
+        $box.parentNode.removeChild($box)
       }
       $cancelBtn.onclick = function(e){
         e.stopPropagation();
@@ -55,7 +55,7 @@
         //关闭弹窗
         $confirmBtn.onclick = null
         $cancelBtn.onclick = null
-        $box.remove()
+        $box.parentNode.removeChild($box)
       }
       if(conf.confirmFn){
         console.log(_this)
